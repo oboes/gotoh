@@ -64,17 +64,18 @@ int main(int argc, char **argv) {
         printf("Needleman-Wunsch global alignment of two sequences\n\n");
         printf("Usage: %s [OPTIONS] SEQUENCE1.fasta SEQUENCE2.fasta\n\n", argv[0]);
         printf("Options and their defaults:\n");
-        printf("    -matrix     BLOSUM62    matrix file in NCBI/BLAST format\n");
+        printf("    -matrix     BLOSUM62    matrix file in NCBI/EMBOSS format\n");
         printf("    -gapopen    9.5         opening gap penalty\n");
         printf("    -gapextend  0.5         extending gap penalty\n");
         printf("    -endopen    0.0         opening end gap penalty\n");
         printf("    -endextend  0.0         extending end gap penalty\n");
         printf("    -quiet                  decrease verbosity\n\n");
-        printf("Advanced (see documentation):\n");
+        printf("Advanced:\n");
         printf("    -arrxfile   arrx.txt    load initial array X from this file\n");
         printf("    -arryfile   arry.txt    load initial array Y from this file\n");
         printf("    -arrzfile   arrz.txt    load initial array Z from this file\n");
-        printf("    -dump                   output final arrays\n");
+        printf("    -dump                   output final arrays\n\n");
+        printf("Default parameters are the same as those of the EMBOSS needle command.\n");
         return 0;
     }
 
