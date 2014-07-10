@@ -42,9 +42,9 @@ gth_set_sub(array, sequence1.res, sequence2.res, matrix.score);
 gth_set_gap(array, gapopen, gapextend, endopen, endextend);
 int score = gth_align(array);
 
-printf(">%s\n", sequence1.name);
+printf("Score: %d\n", score);
 gth_putseq(stdout, sequence1.res, array.gapX);
-printf("\n\n>%s\n", sequence2.name);
+printf("\n");
 gth_putseq(stdout, sequence2.res, array.gapY);
 printf("\n");
 
