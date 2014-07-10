@@ -1,8 +1,8 @@
-simple Gotoh algorithm implementation in C
-==========================================
+Gotoh
+=====
 
 
-A very short (around 500 lines) implementation of the Gotoh algorithm, also known as the
+Short (around 500 lines) implementation of the Gotoh algorithm, also known as the
 [Needleman-Wunsch](http://en.wikipedia.org/wiki/Needleman-Wunsch) algorithm with affine gap penalties.
 The main difference with classical Needleman-Wunsch is that Gotoh requires three different
 dynamic programming arrays.
