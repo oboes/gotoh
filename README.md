@@ -31,6 +31,29 @@ gcc -std=c99 gotoh.c main.c -o align
 ```
 Then type `./align` and read the help message.
 
+Basic C code example:
+```C
+gth_Seq sequence1 = gth_read_fasta("first_sequence.fasta");
+gth_Seq sequence2 = gth_read_fasta("second_sequence.fasta");
+gth_Sub matrix = gth_read_matrix("BLOSUM62");
+int gapopen=10, gapextend=1, endopen=0, endextend=0;
+
+gth_Arr array = gth_init(sequence1.len, sequence2.len);
+gth_set_sub(array, sequence1.res, sequence2.res, matrix.score);
+gth_set_gap(array, gapopen, gapextend, endopen, endextend);
+int score = gth_align(array);
+
+printf(">%s\n", sequence1.name);
+gth_putseq(stdout, sequence1.res, array.gapX);
+printf("\n\n>%s\n", sequence2.name);
+gth_putseq(stdout, sequence2.res, array.gapY);
+printf("\n");
+
+gth_free(array);
+free(sequence1.res);
+free(sequence2.res);
+```
+
 
 ### Reference ###
 Durbin, Eddy, Krogh, Mitchison. [Biological Sequence Analysis](http://books.google.com/books?id=R5P2GlJvigQC),
