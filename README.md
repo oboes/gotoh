@@ -32,25 +32,25 @@ Then type `./align` and read the help message.
 
 Basic example showing how to use the code:
 ```C
-gth_Seq sequence1 = gth_read_fasta("first_sequence.fasta");
-gth_Seq sequence2 = gth_read_fasta("second_sequence.fasta");
+gth_Seq sequenceX = gth_read_fasta("first_sequence.fasta");
+gth_Seq sequenceY = gth_read_fasta("second_sequence.fasta");
 gth_Sub matrix = gth_read_matrix("BLOSUM62");
 int gapopen=10, gapextend=1, endopen=0, endextend=0;
 
-gth_Arr array = gth_init(sequence1.len, sequence2.len);
-gth_set_sub(array, sequence1.res, sequence2.res, matrix.score);
+gth_Arr array = gth_init(sequenceX.len, sequenceY.len);
+gth_set_sub(array, sequenceX.res, sequenceY.res, matrix.score);
 gth_set_gap(array, gapopen, gapextend, endopen, endextend);
 int score = gth_align(array);
 
 printf("Score: %d\n", score);
-gth_putseq(stdout, sequence1.res, array.gapX);
+gth_putseq(stdout, sequenceX.res, array.gapX);
 printf("\n");
-gth_putseq(stdout, sequence2.res, array.gapY);
+gth_putseq(stdout, sequenceY.res, array.gapY);
 printf("\n");
 
 gth_free(array);
-free(sequence1.res);
-free(sequence2.res);
+free(sequenceX.res);
+free(sequenceY.res);
 ```
 
 
