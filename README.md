@@ -2,7 +2,7 @@ Gotoh
 =====
 
 
-Short C implementation (around 500 lines) of the Gotoh algorithm, also known as the
+Short C implementation (around 500 lines of codes + comments) of the Gotoh algorithm, also known as the
 [Needleman-Wunsch](http://en.wikipedia.org/wiki/Needleman-Wunsch) algorithm with affine gap penalties.
 
 
