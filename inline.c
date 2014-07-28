@@ -9,6 +9,7 @@ static const int Inf = 1024*1024*1024;
 
 static inline Vec** alloc_arr(size_t x, size_t y) {
     Vec **arr = (Vec**) malloc( x * sizeof(Vec*) );
+    if (arr == NULL) return NULL;
     for (size_t i=0 ; i<x ; i++) {
         arr[i] = (Vec*) malloc( y * sizeof(Vec) );
     }
@@ -17,12 +18,8 @@ static inline Vec** alloc_arr(size_t x, size_t y) {
 
 static inline void free_arr(Vec **arr, size_t size) {
     if (arr != NULL) {
-        for (size_t i=0 ; i<size ; i++) {
-            free(arr[i]);
-            arr[i] = NULL;
-        }
+        for (size_t i=0 ; i<size ; i++) free(arr[i]);
         free(arr);
-        arr = NULL;
     }
 }
 

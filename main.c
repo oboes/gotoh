@@ -2,6 +2,7 @@
 #include "gotoh.h"
 
 
+// default BLOSUM62 matrix from the EMBOSS package. See end of the file for its initialization.
 const gth_Sub BLOSUM62;
 
 
@@ -74,8 +75,9 @@ int main(int argc, char **argv) {
         printf("    -arrxfile   arrx.txt    load initial array X from this file\n");
         printf("    -arryfile   arry.txt    load initial array Y from this file\n");
         printf("    -arrzfile   arrz.txt    load initial array Z from this file\n");
-        printf("    -dump                   output final arrays\n\n");
+        printf("    -dump                   output final arrays containing partial scores\n\n");
         printf("Default parameters are the same as those of EMBOSS Needle.\n");
+        printf("Feeding corrupted file formats to the program may result in undefined behaviour\n");
         return 0;
     }
 
@@ -130,6 +132,7 @@ int main(int argc, char **argv) {
         for (size_t i=0 ; i<=array.lenX ; i++) {
             for (size_t j=0 ; j<=array.lenY ; j++) {
                 fscanf(file, "%d", &array.data[i][j][k]);
+                array.data[i][j][k] *= 10;
             }
             fscanf(file, "%*[^\n]");
         }
@@ -189,6 +192,7 @@ int main(int argc, char **argv) {
 }
 
 
+// default BLOSUM62 matrix from the EMBOSS package.
 const gth_Sub BLOSUM62 = {
     .alpha = "ARNDCQEGHILKMFPSTWYVBZX", .score = 
     {{  4, -2,  0, -2, -1, -2,  0, -2, -1, -4, -1, -1, -1, -2, -4, -1, -1, -1,  1,  0, -4,  0, -3,  0, -2, -1},

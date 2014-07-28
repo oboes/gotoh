@@ -11,6 +11,7 @@ gth_Arr gth_init(size_t lenX, size_t lenY) {
     arr.path = alloc_arr(lenX+1, lenY+1);
     arr.gapX = (int*) malloc( sizeof(int) * (lenX+1) );
     arr.gapY = (int*) malloc( sizeof(int) * (lenY+1) );
+    if (arr.data == NULL || arr.path == NULL || arr.gapX == NULL || arr.gapY == NULL) gth_free(arr);
     return arr;
 }
 
@@ -127,8 +128,6 @@ void gth_free(gth_Arr arr) {
     free_arr(arr.path, arr.lenX+1);
     free(arr.gapX);
     free(arr.gapY);
-    arr.gapX = NULL;
-    arr.gapY = NULL;
 }
 
 
@@ -138,30 +137,40 @@ gth_Seq gth_read_fasta(const char *filename) {
     gth_Seq seq;
     seq.len = 0;
     seq.name[0] = '\0';
+    seq.res = NULL;
     FILE *file = fopen(filename, "r");
     if (!file) return seq;
+
+    // default sequence name is filename
+    strncpy(seq.name, filename, sizeof(seq.name)-1);
+    seq.name[sizeof(seq.name)-1] = '\0';
 
     // read sequence name
     char format[16];
     sprintf(format, " >%%%lus%%*[^\n]", sizeof(seq.name)-1);
     fscanf(file, format, seq.name);
 
-    // count letters in the sequence
+    // get sequence size and allocate memory
     long offset = ftell(file);
     while (!feof(file)) {
         int c = fgetc(file);
         if (isalpha(c)) seq.len++;
     }
+    if (seq.len == 0) return seq;
     seq.res = (char*) malloc(sizeof(char) * (seq.len+1));
-    fseek(file, offset, SEEK_SET);
 
     // read sequence
-    size_t i = 0;
-    while (!feof(file) && i<seq.len) {
-        int c = fgetc(file);
-        if (isalpha(c)) seq.res[i++] = toupper(c);
+    if (seq.res != NULL) {
+        fseek(file, offset, SEEK_SET);
+
+        size_t i = 0;
+        while (!feof(file) && i<seq.len) {
+            int c = fgetc(file);
+            if (isalpha(c)) seq.res[i++] = toupper(c);
+        }
+        seq.res[i] = '\0';
     }
-    seq.res[i] = '\0';
+    else seq.len = 0;
 
     fclose(file);
     return seq;
@@ -173,6 +182,11 @@ gth_Sub gth_read_matrix(const char *filename) {
 
     gth_Sub matrix;
     matrix.alpha[0] = '\0';
+    for (int i=0 ; i<sizeof(matrix.alpha-1) ; i++) {
+        for (int j=0 ; j<sizeof(matrix.alpha-1) ; j++) {
+            matrix.score[i][j] = 0;
+        }
+    }
     FILE *file = fopen(filename, "r");
     if (!file) return matrix;
 
