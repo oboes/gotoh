@@ -4,6 +4,7 @@ Gotoh
 
 Short C implementation (around 500 lines of codes + comments) of the Gotoh algorithm, also known as the
 [Needleman-Wunsch](http://en.wikipedia.org/wiki/Needleman-Wunsch) algorithm with affine gap penalties.
+This software was developed for my 2014 bioinformatics master thesis, [available here](./doc/thesis.pdf).
 
 
 ### Features ###
@@ -54,7 +55,9 @@ free(sequenceY.res);
 ```
 
 
-### Reference ###
-Durbin, Eddy, Krogh, Mitchison. [Biological Sequence Analysis](http://books.google.com/books?id=R5P2GlJvigQC),
-*Cambridge University Press*, 1998.
+### Citing this work ###
+If you use this software, you can cite my bioinformatics master thesis:
+
+* Olivier Boes. [Improving the Needleman-Wunsch algorithm with the DynaMine predictor](./thesis.pdf),
+*(master thesis)*, 2014.
 

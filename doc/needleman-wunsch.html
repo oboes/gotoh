@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="Olivier BOES">
+        <title>Needleman-Wunsch algorithm</title>
+        <style>
+            body { background: #CCCCCC; margin: 0; padding: 0; }
+            #wrapper { margin:2.0em 8.0em; padding: 0.5em 2.5em 1.5em 2.5em; background: #FFFFFF; box-shadow: 5px 5px 5px 1px #999999; }
+            @media (max-width: 1000px) { #wrapper { margin:1em 1em; } }
+            h1 { text-align: center; }
+            input { font-family: monospace; }
+            .center { display: block; margin: auto; text-align:center; }
+        </style>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script type="text/javascript">
+            function update() {
+
+                var seq1 = document.getElementById('seq1').value;
+                var seq2 = document.getElementById('seq2').value;
+                var match = parseInt( document.getElementById('match').value );
+                var sub = parseInt( document.getElementById('sub').value );
+                var gap = parseInt( document.getElementById('gap').value );
+
+                var m = seq1.length;
+                var n = seq2.length;
+
+
+                // array creation
+
+                var arr = [ [] ];
+
+                for ( var j = 0 ; j <= n ; j++ ) arr[0][j] = j*gap;
+
+                for ( var i = 1 ; i <= m ; i++ ) {
+
+                    arr[i] = [i*gap];
+
+                    for ( var j = 1 ; j <= n ; j++ ) arr[i][j] = Math.max(
+                            arr[i-1][j] + gap,
+                            arr[i][j-1] + gap,
+                            arr[i-1][j-1] + ( seq1[i-1] == seq2[j-1] ? match : sub )
+                    );
+                }
+
+
+                // backtracking
+
+                var out1 = '';
+                var out2 = '';
+
+                while ( m > 0 && n > 0 ) {
+
+                    if ( arr[m][n] == arr[m-1][n] + gap ) {
+                        m--;
+                        out1 = seq1[m] + out1;
+                        out2 =     '-' + out2;
+                    }
+
+                    else if ( arr[m][n] == arr[m][n-1] + gap ) {
+                        n--;
+                        out1 =     '-' + out1;
+                        out2 = seq2[n] + out2;
+                    }
+
+                    else {
+                        m--;
+                        n--;
+                        out1 = seq1[m] + out1;
+                        out2 = seq2[n] + out2;
+                    }
+                }
+
+                out1 = seq1.slice(0,m) + new Array(n+1).join('-') + out1;
+                out2 = seq2.slice(0,n) + new Array(m+1).join('-') + out2;
+
+
+                // the (messy) drawing part begins here
+
+
+                document.getElementById('output').innerHTML = out1 + '<br>' + out2 + '<br><br>';
+
+                var m = seq1.length;
+                var n = seq2.length;
+                var p = out1.length;
+
+                var width = 65 + n*40;
+                var height = 65 + m*40;
+                paper.clear();
+                paper.setSize( width, height );
+                document.getElementById('paper').style.width = width + 'px';
+                document.getElementById('paper').style.height = height + 'px';
+
+                for ( var i = 0 ; i < m ; i++ ) {
+                    paper.text( 15, 65+40*i, seq1[i])
+                    .attr('font-size', '15px')
+                    .attr('font-family', 'monospace');
+
+                    paper.path( 'M' + (45+40*n) + ',' + (55+40*i+3)
+                              + 'L' + (45+40*n) + ',' + (75+40*i-3) )
+                              .attr( 'arrow-end', 'classic-wide-long' );
+                }
+
+                for ( var j = 0 ; j < n ; j++ ) {
+                    paper.text( 65+40*j, 15, seq2[j])
+                    .attr('font-size', '15px')
+                    .attr('font-family', 'monospace');
+                    paper.path( 'M' + (55+40*j+3) + ',' + (45+40*m)
+                              + 'L' + (75+40*j-3) + ',' + (45+40*m) )
+                              .attr( 'arrow-end', 'classic-wide-long' );
+                }
+
+                for ( var i = 0 ; i < m ; i++ ) {
+                    for ( var j = 0 ; j < n ; j++ ) {
+                        paper.path( 'M' + (45+40*j) + ',' + (55+40*i+3)
+                                  + 'L' + (45+40*j) + ',' + (75+40*i-3) )
+                                  .attr( 'arrow-end', 'classic-wide-long' );
+                        paper.path( 'M' + (55+40*j+3) + ',' + (45+40*i)
+                                  + 'L' + (75+40*j-3) + ',' + (45+40*i) )
+                                  .attr( 'arrow-end', 'classic-wide-long' );
+                        paper.path( 'M' + (55+40*j) + ',' + (55+40*i)
+                                  + 'L' + (75+40*j) + ',' + (75+40*i) )
+                                  .attr( 'arrow-end', 'classic-wide-long' );
+                        }
+                }
+
+                for ( var i = 0, j = 0, k = 0 ; k < p ; k++ ) {
+                    if ( out1[k] == '-' ) {
+                        paper.path( 'M' + (55+40*j) + ',' + (45+40*i)
+                                  + 'L' + (75+40*j) + ',' + (45+40*i) )
+                                  .attr( 'arrow-end', 'open-wide-short' )
+                                  .attr( 'stroke', 'red' )
+                                  .attr( 'stroke-width', 2 );
+                        j++;
+                    }
+                    else if ( out2[k] == '-' ) {
+                        paper.path( 'M' + (45+40*j) + ',' + (55+40*i)
+                                  + 'L' + (45+40*j) + ',' + (75+40*i) )
+                                  .attr( 'arrow-end', 'open-wide-short' )
+                                  .attr( 'stroke', 'red' )
+                                  .attr( 'stroke-width', 2 );
+                        i++;
+                    }
+                    else {
+                        paper.path( 'M' + (55+40*j-3) + ',' + (55+40*i-3)
+                                  + 'L' + (75+40*j+3) + ',' + (75+40*i+3) )
+                                  .attr( 'arrow-end', 'open-wide-short' )
+                                  .attr( 'stroke', 'red' )
+                                  .attr( 'stroke-width', 2 );
+                        i++;
+                        j++;
+                    }
+                }
+
+                for ( var i = 0 ; i <= m ; i++ ) {
+                    for ( var j = 0 ; j <= n ; j++ ) {
+                        paper.circle( 45+40*j, 45+40*i, 10);
+                        paper.text( 45+40*j, 45+40*i, arr[i][j])
+                        .attr('font-size', '10px')
+                        .attr('font-family', 'monospace');
+                    }
+                }
+            }
+        </script>
+
+    </head>
+    <body onload="update()">
+        <div id="wrapper">
+
+            <h1>Needleman-Wunsch algorithm</h1>
+
+            <p class="center"><em>
+                A small educative application explaining the
+                <a href="http://en.wikipedia.org/wiki/Needleman-Wunsch_algorithm">Needleman-Wunsch algorithm</a>.
+                <br>
+                Interactive array drawn using <a href="http://www.raphaeljs.com/">Raphaël</a> JavaScript library.
+            </em></p>
+
+            <p><form class="center">
+                sequence 1 =
+                <input type="text" id="seq1" size="20" maxlength="40" style="width:20em" value="TACGTCT" oninput="update()"><br>
+                
+                sequence 2 =
+                <input type="text" id="seq2" size="20" maxlength="40" style="width:20em" value="CTAGGATCAC" oninput="update()"><br><br>
+
+                match =
+                <input type="number" id="match" min="-9" max="9" value="3" oninput="update()">&nbsp;
+
+                sub =
+                <input type="number" id="sub" min="-9" max="9" value="-2" oninput="update()">&nbsp;
+
+                gap =
+                <input type="number" id="gap" min="-9" max="9" value="-1" oninput="update()">
+            </form></p>
+
+            <div id="paper" class="center"></div>
+            <div id="output" class="center" style="font-family:monospace; font-size:200%;"></div>
+            <script type="text/javascript"> var paper = Raphael( 'paper', 500, 500 ); </script>
+        </div>
+    </body>
+</html>
