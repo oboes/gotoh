@@ -2,6 +2,7 @@ Short C implementation (around 500 lines of codes + comments) of the Gotoh algor
 [Needleman-Wunsch](http://en.wikipedia.org/wiki/Needleman-Wunsch) algorithm with affine gap penalties.
 
 This software was developed for my 2014 bioinformatics master thesis, [available here](./doc/thesis.pdf).
+See also the [defense slides](./doc/slides.pdf) for a high-level summary.
 
 Also included in this repo is this [small interactive explanation](http://oboes.github.io/gotoh/doc/needleman-wunsch.html) of the Needleman-Wunsch algorithm.
 
