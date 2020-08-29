@@ -1,10 +1,9 @@
-Gotoh
-=====
-
-
 Short C implementation (around 500 lines of codes + comments) of the Gotoh algorithm, also known as the
 [Needleman-Wunsch](http://en.wikipedia.org/wiki/Needleman-Wunsch) algorithm with affine gap penalties.
+
 This software was developed for my 2014 bioinformatics master thesis, [available here](./doc/thesis.pdf).
+
+Also included in this repo is this [small interactive explanation](http://oboes.github.io/gotoh/needleman-wunsch.html) of the Needleman-Wunsch algorithm.
 
 
 ### Features ###
@@ -56,8 +55,14 @@ free(sequenceY.res);
 
 
 ### Citing this work ###
+
 If you use this software, you can cite my bioinformatics master thesis:
 
-* Olivier Boes. [Improving the Needleman-Wunsch algorithm with the DynaMine predictor](./thesis.pdf),
-*(master thesis)*, 2014.
-
+```
+@mastersthesis{oboes-dynamine,
+    author    = "Olivier Boes",
+    title     = "Improving the Needleman-Wunsch algorithm with the DynaMine predictor",
+    school    = "Université Libre de Bruxelles",
+    year      = "2014"
+}
+```
