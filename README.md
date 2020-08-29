@@ -3,7 +3,7 @@ Short C implementation (around 500 lines of codes + comments) of the Gotoh algor
 
 This software was developed for my 2014 bioinformatics master thesis, [available here](./doc/thesis.pdf).
 
-Also included in this repo is this [small interactive explanation](http://oboes.github.io/gotoh/needleman-wunsch.html) of the Needleman-Wunsch algorithm.
+Also included in this repo is this [small interactive explanation](http://oboes.github.io/gotoh/doc/needleman-wunsch.html) of the Needleman-Wunsch algorithm.
 
 
 ### Features ###
